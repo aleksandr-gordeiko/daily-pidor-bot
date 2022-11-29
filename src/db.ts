@@ -29,11 +29,12 @@ const saveOrUpdatePidor = async (pidor: User, chat_id: number): Promise<void> =>
       name: `${pidor.first_name} ${pidor.last_name}`,
     });
   } else {
+    const name = `${pidor.first_name}${pidor.last_name ? ` ${pidor.last_name}` : ''}`;
     await Pidor.create({
       id: pidor.id,
       chat_id,
       username: pidor.username,
-      name: `${pidor.first_name} ${pidor.last_name}`,
+      name,
       count: 0,
     });
   }
