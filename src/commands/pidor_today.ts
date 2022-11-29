@@ -10,13 +10,20 @@ const pidorToday = async (ctx: Context): Promise<void> => {
   const pidor = pidors[Math.floor(Math.random() * pidors.length)];
   if (await setTodaysPidor(pidor)) {
     await incrementPidorCount(pidor);
+    let name;
+    if (pidor.username !== undefined) {
+      name = `@${pidor.username} `;
+    } else {
+      name = pidor.name;
+    }
+
     await ctx.reply('8===D    o');
     await sleep(1);
     await ctx.reply('8=O');
     await sleep(1);
     await ctx.reply('8===D    O');
     await sleep(1);
-    await ctx.reply(`Пидором дня объявляется - @${pidor.username} !`);
+    await ctx.reply(`Пидором дня объявляется - ${name}!`);
   } else {
     await ctx.reply('Пидор дня уже выбран!');
   }

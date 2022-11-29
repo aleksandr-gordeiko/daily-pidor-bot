@@ -24,11 +24,15 @@ const closeConnection = async (): Promise<void> => {
 const saveOrUpdatePidor = async (pidor: User): Promise<void> => {
   const pidors = await Pidor.find({ id: pidor.id });
   if (pidors.length !== 0) {
-    await Pidor.updateOne({ id: pidor.id }, { username: pidor.username });
+    await Pidor.updateOne({ id: pidor.id }, {
+      username: pidor.username,
+      name: `${pidor.first_name} ${pidor.last_name}`,
+    });
   } else {
     await Pidor.create({
       id: pidor.id,
       username: pidor.username,
+      name: `${pidor.first_name} ${pidor.last_name}`,
       count: 0,
     });
   }
