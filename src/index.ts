@@ -2,16 +2,18 @@ import { Bot } from 'grammy/out/bot';
 import { connectDB, closeConnection } from './db';
 
 import error from './middlewares/error';
-// Import other middlewares
+import rememberPidor from './middlewares/remember_pidor';
 
-// Import commands
+import pidorToday from './commands/pidor_today';
+import pidorStats from './commands/pidor_stats';
 
 const bot: Bot = new Bot(process.env.BOT_API_TOKEN);
 
 bot.use(error);
-// Use other middlewares
+bot.use(rememberPidor);
 
-// Bind commands
+bot.command('pidor_today', pidorToday);
+bot.command('pidor_stats', pidorStats);
 
 process.once('SIGINT', () => {
   closeConnection()
