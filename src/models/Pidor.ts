@@ -2,6 +2,7 @@ import { Schema, model } from 'mongoose';
 
 interface IPidor {
   id: number;
+  chat_id: number;
   name: string;
   username: string;
   count: number;
@@ -9,6 +10,7 @@ interface IPidor {
 
 const pidorSchema = new Schema<IPidor>({
   id: { type: Number, required: true },
+  chat_id: { type: Number, required: true },
   name: { type: String, required: true },
   username: { type: String, required: true },
   count: { type: Number, required: true },

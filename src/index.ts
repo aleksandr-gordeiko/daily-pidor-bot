@@ -12,8 +12,8 @@ const bot: Bot = new Bot(process.env.BOT_API_TOKEN);
 bot.use(error);
 bot.use(rememberPidor);
 
-bot.command('pidor_today', pidorToday);
-bot.command('pidor_stats', pidorStats);
+bot.command('today', pidorToday);
+bot.command('stats', pidorStats);
 
 process.once('SIGINT', () => {
   closeConnection()

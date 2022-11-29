@@ -6,7 +6,7 @@ function sleep(seconds: number) {
 }
 
 const pidorToday = async (ctx: Context): Promise<void> => {
-  const pidors = await getPidors();
+  const pidors = await getPidors(ctx.chat.id);
   const pidor = pidors[Math.floor(Math.random() * pidors.length)];
   if (await setTodaysPidor(pidor)) {
     await incrementPidorCount(pidor);

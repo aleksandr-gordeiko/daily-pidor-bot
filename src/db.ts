@@ -21,8 +21,8 @@ const closeConnection = async (): Promise<void> => {
   }
 };
 
-const saveOrUpdatePidor = async (pidor: User): Promise<void> => {
-  const pidors = await Pidor.find({ id: pidor.id });
+const saveOrUpdatePidor = async (pidor: User, chat_id: number): Promise<void> => {
+  const pidors = await Pidor.find({ id: pidor.id, chat_id });
   if (pidors.length !== 0) {
     await Pidor.updateOne({ id: pidor.id }, {
       username: pidor.username,
@@ -31,6 +31,7 @@ const saveOrUpdatePidor = async (pidor: User): Promise<void> => {
   } else {
     await Pidor.create({
       id: pidor.id,
+      chat_id,
       username: pidor.username,
       name: `${pidor.first_name} ${pidor.last_name}`,
       count: 0,
@@ -38,14 +39,14 @@ const saveOrUpdatePidor = async (pidor: User): Promise<void> => {
   }
 };
 
-const getPidors = async (): Promise<IPidor[]> => Pidor.find({});
+const getPidors = async (chat_id: number): Promise<IPidor[]> => Pidor.find({ chat_id });
 
 const incrementPidorCount = async (pidor: IPidor): Promise<void> => {
-  await Pidor.updateOne({ id: pidor.id }, { count: pidor.count + 1 });
+  await Pidor.updateOne({ id: pidor.id, chat_id: pidor.chat_id }, { count: pidor.count + 1 });
 };
 
 const setTodaysPidor = async (pidor: IPidor): Promise<boolean> => {
-  const lastTodaysPidor = (await TodaysPidor.find({}).sort({ date: -1 }).limit(1))[0];
+  const lastTodaysPidor = (await TodaysPidor.find({ chat_id: pidor.chat_id }).sort({ date: -1 }).limit(1))[0];
   const now = new Date();
   if (lastTodaysPidor === undefined
       || lastTodaysPidor.date.getDate() !== now.getDate()
@@ -53,6 +54,7 @@ const setTodaysPidor = async (pidor: IPidor): Promise<boolean> => {
       || lastTodaysPidor.date.getFullYear() !== now.getFullYear()) {
     await TodaysPidor.create({
       id: pidor.id,
+      chat_id: pidor.chat_id,
       date: now,
     });
     return true;
